@@ -10,7 +10,7 @@ from places.destination import Tour, TourBasicInfo, TourInput, TourLocation, tou
 router = APIRouter()
 
 
-@router.post("/ch02/admin/destination/add")
+@router.post("/ch02/admin/destination/add", summary='新增目的地',tags=['目的地','後台'])
 def add_tour_destination(input: TourInput):
     try:
         tid = uuid1()
@@ -30,7 +30,7 @@ def add_tour_destination(input: TourInput):
         return JSONResponse(content={"message": "invalid tour"}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.delete("/ch02/admin/destination/remove/{id}")
+@router.delete("/ch02/admin/destination/remove/{id}", summary='移除目的地',tags=['目的地','後台'])
 def remove_tour_destination(id: UUID):
     try:
         del tours[id]
@@ -42,7 +42,7 @@ def remove_tour_destination(id: UUID):
                             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.put("/ch02/admin/destination/update", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/ch02/admin/destination/update", status_code=status.HTTP_202_ACCEPTED, summary='更新目的地',tags=['目的地','後台'])
 def update_tour_destination(tour: Tour):
     try:
         tid = tour.id
@@ -58,22 +58,22 @@ def update_tour_destination(tour: Tour):
         return {"message": "tour does not exist"}
 
 
-@router.get("/ch02/admin/destination/list", status_code=status.HTTP_200_OK)
+@router.get("/ch02/admin/destination/list", status_code=status.HTTP_200_OK, summary='取得目的地清單',tags=['目的地','後台'])
 def list_all_tours():
     return tours
 
 
-@router.get("/ch02/admin/tourists/list")
+@router.get("/ch02/admin/tourists/list", summary='取得觀光客清單',tags=['觀光客','後台'])
 def list_all_tourists():
     return approved_users
 
 
-@router.get("/ch02/admin/tourists/pending/list")
+@router.get("/ch02/admin/tourists/pending/list", summary='取得等候的觀光客清單',tags=['觀光客','後台'])
 def list_all_pending():
     return pending_users
 
 
-@router.get("/ch02/admin/tourists/vip")
+@router.get("/ch02/admin/tourists/vip", summary='取得VIP觀光客清單',tags=['觀光客','後台'])
 def list_valuable_visitors():
     try:
         sort_orders = sorted(approved_users.items(), key=lambda x: x[1].booked, reverse=True)
@@ -83,7 +83,7 @@ def list_valuable_visitors():
         return JSONResponse(content={"message": "invalid operation"}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.post("/ch02/admin/user/login/approve")
+@router.post("/ch02/admin/user/login/approve", summary='核准使用者',tags=['使用者','後台'])
 def approve_login(userid: UUID):
     try:
         approved_users[userid] = pending_users[userid]

@@ -98,7 +98,7 @@ class TourPreference(str, Enum):
     solo = "solo"
 
 
-@router.get("/ch02/destinations/list/all")
+@router.get("/ch02/destinations/list/all", summary='取得所有旅遊目的地清單',tags=['目的地'])
 def list_tour_destinations():
     tours_json = jsonable_encoder(tours)
     resp_headers = {'X-Access-Tours': 'Try Us', 'X-Contact-Details': '1-900-888-TOLL',
@@ -106,13 +106,13 @@ def list_tour_destinations():
     return JSONResponse(content=tours_json, headers=resp_headers)
 
 
-@router.get("/ch02/destinations/details/{id}")
+@router.get("/ch02/destinations/details/{id}", summary='取得單一旅遊目的地詳細說明',tags=['目的地'])
 def check_tour_profile(id: UUID):
     tour_info_json = jsonable_encoder(tours[id])
     return JSONResponse(content=tour_info_json)
 
 
-@router.get("/ch02/destinations/amenities/tour/{id}")
+@router.get("/ch02/destinations/amenities/tour/{id}", summary='取得單一目的地的設施',tags=['目的地'])
 def show_amenities(id: UUID):
     if tours[id].amenities is not None:
         amenities = tours[id].amenities
@@ -122,7 +122,7 @@ def show_amenities(id: UUID):
         return {"message": "no amenities"}
 
 
-@router.get("/ch02/destinations/mostbooked")
+@router.get("/ch02/destinations/mostbooked", summary='最多訂的目的地',tags=['目的地'])
 def check_recommended_tour(resp: Response):
     resp.headers['X-Access-Tours'] = 'TryUs'
     resp.headers['X-Contact-Details'] = '1900888TOLL'

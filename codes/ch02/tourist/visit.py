@@ -26,13 +26,13 @@ class Booking(BaseModel):
     tourist_id: UUID
 
 
-@router.get("/ch02/tourist/tour/preference")
+@router.get("/ch02/tourist/tour/preference", summary='旅遊偏好',tags=['觀光客'])
 def make_tour_preferences(preference: TourPreference):
     tour_preferences.add(preference)
     return tour_preferences
 
 
-@router.post("/ch02/tourist/tour/booking/add")
+@router.post("/ch02/tourist/tour/booking/add", summary='旅遊增加預訂',tags=['觀光客'])
 def create_booking(tour: TourBasicInfo, touristId: UUID):
     if approved_users.get(touristId) is None:
         raise HTTPException(status_code=500, detail="details are missing")
@@ -45,7 +45,7 @@ def create_booking(tour: TourBasicInfo, touristId: UUID):
     return booking
 
 
-@router.delete("/ch02/tourist/tour/booking/delete")
+@router.delete("/ch02/tourist/tour/booking/delete", summary='旅遊刪除預訂',tags=['觀光客'])
 def remove_booking(bid: UUID, touristId: UUID):
     if approved_users.get(touristId) is None:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="details are missing")
@@ -54,7 +54,7 @@ def remove_booking(bid: UUID, touristId: UUID):
     return approved_users[touristId]
 
 
-@router.get("/ch02/tourist/tour/booked")
+@router.get("/ch02/tourist/tour/booked", summary='取得旅遊預訂',tags=['觀光客'])
 def show_booked_tours(touristId: UUID):
     if approved_users.get(touristId) is None:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -62,12 +62,12 @@ def show_booked_tours(touristId: UUID):
     return approved_users[touristId]['tours']
 
 
-@router.get("/ch02/tourist/tour/location")
+@router.get("/ch02/tourist/tour/location", summary='取得旅遊位置',tags=['觀光客'])
 def show_location(tid: UUID):
     return tours_locations[tid]
 
 
-@router.get("/ch02/tourist/tour/available")
+@router.get("/ch02/tourist/tour/available", summary='取得有效的旅遊',tags=['觀光客'])
 def show_available_tours():
-    available_tours = [t for t in tours.values() if t.isBooked is False]
+    available_tours = [t for t in tours.values() if t.isBooked is True]
     return available_tours
