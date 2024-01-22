@@ -23,7 +23,7 @@ class Assessment(BaseModel):
     tourist_id: UUID
 
 
-@router.post("/feedback/add")
+@router.post("/feedback/add", summary='新增回饋',tags=['回饋'])
 def post_tourist_feedback(touristId: UUID, tid: UUID, post: Post, bg_task: BackgroundTasks):
     if approved_users.get(touristId) is None and tours.get(tid) is None:
         raise PostFeedbackException(detail='tourist and tour details invalid', status_code=403)
@@ -38,7 +38,7 @@ def post_tourist_feedback(touristId: UUID, tid: UUID, post: Post, bg_task: Backg
     return JSONResponse(content=assess_json, status_code=200)
 
 
-@router.post("/feedback/update/rating")
+@router.post("/feedback/update/rating", summary='更新回饋評比',tags=['回饋'])
 def update_tour_rating(assessId: UUID, new_rating: StarRating):
     print(new_rating)
     if feedback_tour.get(assessId) is None:
@@ -49,7 +49,7 @@ def update_tour_rating(assessId: UUID, new_rating: StarRating):
     return JSONResponse(content=tour_json, status_code=200)
 
 
-@router.delete("/feedback/delete")
+@router.delete("/feedback/delete", summary='刪除回饋',tags=['回饋'])
 async def delete_tourist_feedback(assessId: UUID, touristId: UUID):
     if approved_users.get(touristId) is None and feedback_tour.get(assessId):
         raise PostFeedbackException(detail='tourist and tour details invalid', status_code=403)
@@ -61,7 +61,7 @@ async def delete_tourist_feedback(assessId: UUID, touristId: UUID):
     return JSONResponse(content={"message": f"deleted posts of {touristId}"}, status_code=200)
 
 
-@router.get("/feedback/list")
+@router.get("/feedback/list", summary='取得回饋清單',tags=['回饋'])
 async def show_tourist_post(touristId: UUID):
     print(feedback_tour)
     tourist_posts = [assess for assess in feedback_tour.values() if assess.tourist_id == touristId]
