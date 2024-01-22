@@ -13,7 +13,7 @@ from repository.keywords import KeywordRepository
 router = APIRouter()
 
 
-@router.post("/keyword/insert")
+@router.post("/keyword/insert", summary='新增關鍵字',tags=['關鍵字'])
 @inject
 def insert_recipe_keywords(rid: UUID, keywords: List[str],
                            keywordservice: KeywordRepository = Depends(Provide[Container.keywordservice])):
@@ -25,7 +25,7 @@ def insert_recipe_keywords(rid: UUID, keywords: List[str],
         return JSONResponse(content={"message": "invalid operation"}, status_code=403)
 
 
-@router.post("/keyword/add")
+@router.post("/keyword/add", summary='新增關鍵字',tags=['關鍵字'])
 @inject
 def add_recipe_keyword(rid: UUID, keyword: str,
                        keywordservice: KeywordRepository = Depends(Provide[Container.keywordservice])):
@@ -33,14 +33,14 @@ def add_recipe_keyword(rid: UUID, keyword: str,
     return JSONResponse(content={"message": "inserted recipe keywords"}, status_code=201)
 
 
-@router.post("/keyword/get")
+@router.post("/keyword/get", summary='取得關鍵字',tags=['關鍵字'])
 @inject
 def get_recipe_keywords(rid: UUID, keywordservice: KeywordRepository = Depends(Provide[Container.keywordservice])):
     keywords_json = jsonable_encoder(keywordservice.query_keywords(rid))
     return keywords_json
 
 
-@router.get("/keyword/list")
+@router.get("/keyword/list", summary='取得關鍵字清單',tags=['關鍵字'])
 @inject
 def get_all_keywords(keywordservice: KeywordRepository = Depends(Provide[Container.keywordservice])):
     keywords_json = jsonable_encoder(keywordservice.query_all_keywords())

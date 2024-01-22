@@ -18,7 +18,7 @@ class LoginReq(BaseModel):
     password: str
 
 
-@router.get("/login/query")
+@router.get("/login/query", summary='查詢',tags=['登入'])
 @inject
 def login_with_query(username: str, password: str,
                      loginservice: LoginRepository = Depends(Provide[Container.loginservice])):
@@ -31,7 +31,7 @@ def login_with_query(username: str, password: str,
         return JSONResponse(content={"message": "user does not exists"}, status_code=status.HTTP_403_FORBIDDEN)
 
 
-@router.post("/login/model")
+@router.post("/login/model", summary='模組',tags=['登入'])
 @inject
 def login_with_model(user: LoginReq, loginservice: LoginRepository = Depends(Provide[Container.loginservice])):
     login = [account for account in login_details.values() if account.username == user.username]

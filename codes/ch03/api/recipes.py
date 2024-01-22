@@ -28,7 +28,7 @@ class RecipeReq(BaseModel):
 router = APIRouter()
 
 
-@router.post("/recipes/insert")
+@router.post("/recipes/insert", summary='新增食譜',tags=['食譜'])
 def insert_recipe(recipe: RecipeReq, handler=Depends(get_recipe_service)):
     json_dict = jsonable_encoder(recipe)
     rec = Recipe(**json_dict)
@@ -36,6 +36,6 @@ def insert_recipe(recipe: RecipeReq, handler=Depends(get_recipe_service)):
     return JSONResponse(content=json_dict, status_code=200)
 
 
-@router.get("/recipes/list/all")
+@router.get("/recipes/list/all", summary='取得食譜清單',tags=['食譜'])
 def get_all_recipes(handler=Depends(get_recipe_service)):
     return handler.get_recipes()

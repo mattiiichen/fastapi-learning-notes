@@ -10,14 +10,14 @@ from containers.single_container import Container
 router = APIRouter()
 
 
-@router.get("/admin/login/details/list")
+@router.get("/admin/login/details/list", summary='取得登入細節清單',tags=['admin'])
 @inject
 def list_login_details(adminservice: AdminRepository = Depends(Provide[Container.adminservice])):
     login_details_json = jsonable_encoder(adminservice.query_login_details())
     return login_details_json
 
 
-@router.get("/admin/user/profiles/list")
+@router.get("/admin/user/profiles/list", summary='取得使用者資料清單',tags=['admin'])
 @inject
 def list_user_profiles(adminservice: AdminRepository = Depends(Provide[Container.adminservice])):
     user_profiles_json = jsonable_encoder(adminservice.query_user_profiles())

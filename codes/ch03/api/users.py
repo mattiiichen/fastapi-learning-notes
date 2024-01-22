@@ -33,7 +33,7 @@ async def create_user_details(id: UUID, firstname: str, lastname: str, middle: s
     return user
 
 
-@router.get("/users/function/add")
+@router.get("/users/function/add", summary='新增使用者(Function)',tags=['使用者'])
 def populate_user_accounts(user_account: Login = Depends(create_login)):
     account_dict = jsonable_encoder(user_account)
     login = Login(**account_dict)
@@ -41,7 +41,7 @@ def populate_user_accounts(user_account: Login = Depends(create_login)):
     return login
 
 
-@router.post("/users/datamodel/add")
+@router.post("/users/datamodel/add", summary='新增使用者(Model)',tags=['使用者'])
 def populate_login_without_service(user_account=Depends(Login)):
     account_dict = jsonable_encoder(user_account)
     login = Login(**account_dict)
@@ -49,7 +49,7 @@ def populate_login_without_service(user_account=Depends(Login)):
     return login
 
 
-@router.post("/users/add/profile")
+@router.post("/users/add/profile", summary='新增使用者',tags=['使用者'])
 async def add_profile_login(profile=Depends(create_user_details)):
     user_profile = jsonable_encoder(profile)
     user = User(**user_profile)
@@ -60,7 +60,7 @@ async def add_profile_login(profile=Depends(create_user_details)):
     return user_profile
 
 
-@router.post("/users/add/model/profile")
+@router.post("/users/add/model/profile", summary='新增使用者個人資料',tags=['使用者'])
 async def add_profile_login_models(profile: Profile = Depends(Profile, use_cache=False)):
     user_details = jsonable_encoder(profile.user)
     login_details = jsonable_encoder(profile.login)

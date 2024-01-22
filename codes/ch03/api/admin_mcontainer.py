@@ -10,7 +10,7 @@ from containers.multiple_containers import RecipeAppContainer
 router = APIRouter()
 
 
-@router.get("/admin/logs/visitors/list")
+@router.get("/admin/logs/visitors/list", summary='訪客日誌',tags=['admin'])
 @inject
 def list_logs_visitors(
         adminservice: AdminRepository = Depends(Provide[RecipeAppContainer.admincontainer.adminservice])):
